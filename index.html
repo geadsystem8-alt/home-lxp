@@ -364,7 +364,25 @@
     }
   }
 
-  document.addEventListener('DOMContentLoaded', highlightActiveCards);
+  //document.addEventListener('DOMContentLoaded', highlightActiveCards);
+  document.addEventListener('DOMContentLoaded', () => {
+  // Estamos em iframe?
+  const inIframe = window.self !== window.top;
+
+  // Se em iframe, espere o navegador restaurar o scroll dele primeiro
+  if (inIframe) {
+    setTimeout(() => {
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          highlightActiveCards();
+        });
+      });
+    }, 250); // 250ms é o sweet spot
+  } else {
+    // Página aberta diretamente → scroll normal
+    highlightActiveCards();
+  }
+});
 })();
 </script>
 
