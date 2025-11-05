@@ -124,6 +124,18 @@
       .card, .item, .callout{box-shadow:none; background:#fff; border-color:#ccc}
       a{color:#00f; text-decoration: underline}
     }
+    /* Efeito de brilho pulsante no card ativo */
+  .active {
+    border: 2px solid var(--success);
+    box-shadow: 0 0 20px rgba(32, 201, 151, .6);
+    transform: translateY(-3px);
+    animation: pulse 0.2s infinite alternate;
+    transition: all 0.4s ease-in-out;
+  }
+  @keyframes pulse {
+    from { box-shadow: 0 0 10px rgba(32, 201, 151, .3); }
+    to { box-shadow: 0 0 25px rgba(32, 201, 151, .8); }
+  }
   </style>
 </head>
 <body>
@@ -153,27 +165,27 @@
         <div class="card" style="grid-column: span 12;">
           <div class="timeline">
             <div class="item ok">
-              <div class="when">05/08 a 13/08 — Ciclo 1 </div>
+              <div class="when">10/10 a 21/10 — Ciclo 1 </div>
               <div class="what">Conteúdos para estudo + <strong>Atividade 1</strong> — <strong>9 pontos</strong></div>
               <div class="tags"><span class="tag">✅ Atividade</span><span class="tag">Estudos</span></div>
             </div>
             <div class="item ok">
-              <div class="when">14/08 a 23/08 — Ciclo 2</div>
+              <div class="when">22/10 a 31/10 — Ciclo 2</div>
               <div class="what">Conteúdos para estudo + <strong>Atividade 2</strong> — <strong>9 pontos</strong></div>
               <div class="tags"><span class="tag">✅ Atividade</span><span class="tag">Estudos</span></div>
             </div>
             <div class="item ok">
-              <div class="when">25/08 a 03/09 — Ciclo 3</div>
+              <div class="when">01/11 a 13/11 — Ciclo 3</div>
               <div class="what">Conteúdos para estudo + <strong>Atividade 3</strong> — <strong>9 pontos</strong></div>
               <div class="tags"><span class="tag">✅ Atividade</span><span class="tag">Estudos</span></div>
             </div>
             <div class="item ok">
-              <div class="when">04/09 a 12/09 — Ciclo 4</div>
+              <div class="when">14/11 a 23/11 — Ciclo 4</div>
               <div class="what">Conteúdos para estudo (<em>A atividade será liberada no ciclo 5</em>)</div>
               <div class="tags"><span class="tag">ℹ️ Estudos</span></div>
             </div>
             <div class="item ok">
-              <div class="when">13/09 a 22/09 — Ciclo 5</div>
+              <div class="when">24/11 a 04/12 — Ciclo 5</div>
               <div class="what">Conteúdos para estudo + <strong>Atividade 4</strong> (contemplando os ciclos 4 e 5) — <strong>18 pontos</strong></div>
               <div class="tags"><span class="tag">✅ Atividade</span><span class="tag">Estudos</span></div>
             </div>
@@ -198,11 +210,11 @@
           <div class="grid" style="grid-template-columns: repeat(12, 1fr); gap:12px">
             <div class="card" style="grid-column: span 12; background:rgba(18,32,56,.6)">
               <h3>📝 Prova — 1ª chamada</h3>
-              <p><strong>12/09 a 13/09</strong> — Conteúdos dos ciclos <strong>1, 2 e 3</strong> — <strong>40 pontos</strong></p>
+              <p><strong>25/11 a 26/11</strong> — Conteúdos dos ciclos <strong>1, 2 e 3</strong> — <strong>40 pontos</strong></p>
             </div>
             <div class="card" style="grid-column: span 12; background:rgba(18,32,56,.6)">
               <h3>📝 Prova — 2ª chamada</h3>
-              <p><strong>16/09 a 17/09</strong> — Conteúdos dos ciclos <strong>1, 2 e 3</strong> — <strong>40 pontos</strong></p>
+              <p><strong>28/11 a 29/11</strong> — Conteúdos dos ciclos <strong>1, 2 e 3</strong> — <strong>40 pontos</strong></p>
             </div>
           </div>
 
@@ -222,7 +234,7 @@
           <h2 id="acompanhamento-title" style="margin:0 0 8px">Acompanhamento e Fechamentos</h2>
           <div class="timeline">
             <div class="item warn">
-              <div class="when">01/10 — Fechamento das Notas</div>
+              <div class="when">15/12 — Fechamento das Notas</div>
               <div class="what">Acompanhe o lançamento das notas dentro do módulo em andamento.</div>
             </div>
             <div class="item alert">
@@ -230,11 +242,11 @@
               <div class="what">Não será mais possível solicitar <strong>revisão de nota</strong>.</div>
             </div>
             <div class="item ok">
-              <div class="when">09/10 — Término do módulo</div>
+              <div class="when">18/12 — Término do módulo</div>
               <div class="what">Encerramento oficial das atividades do módulo.</div>
             </div>
             <div class="item ok">
-              <div class="when">24 e 25/10 — Prova Final</div>
+              <div class="when">06/02/2026 a 07/02/2026 — Prova Final</div>
               <div class="what">Aplicação da prova final, conforme calendário.</div>
             </div>
           </div>
@@ -257,6 +269,104 @@
       </div>
     </footer>
   </main>
+
+
+
+<script>
+(function(){
+  function parseDateRange(text) {
+    text = (text || '').replace(/–/g,'-').replace(/—/g,'-').replace(/\u2013/g,'-');
+    const year = new Date().getFullYear();
+    // padrão dd/mm a dd/mm
+    let m = text.match(/(\d{1,2})\/(\d{2})\s*(?:a|à|\-|-)\s*(\d{1,2})\/(\d{2})/i);
+    if (m) {
+      const start = new Date(year, parseInt(m[2],10)-1, parseInt(m[1],10));
+      const end = new Date(year, parseInt(m[4],10)-1, parseInt(m[3],10));
+      return {start, end};
+    }
+    // padrão "24 e 25/10" ou "24, 25/10"
+    m = text.match(/(\d{1,2})\s*(?:e|,)\s*(\d{1,2})\/(\d{2})/i);
+    if (m) {
+      const start = new Date(year, parseInt(m[3],10)-1, parseInt(m[1],10));
+      const end = new Date(year, parseInt(m[3],10)-1, parseInt(m[2],10));
+      return {start, end};
+    }
+    // pega quaisquer pares dd/mm no texto
+    const all = [...text.matchAll(/(\d{1,2})\/(\d{2})/g)];
+    if (all.length >= 2) {
+      const a = all[0], b = all[all.length-1];
+      const start = new Date(year, parseInt(a[2],10)-1, parseInt(a[1],10));
+      const end = new Date(year, parseInt(b[2],10)-1, parseInt(b[1],10));
+      return {start,end};
+    }
+    if (all.length === 1) {
+      const a = all[0];
+      const start = new Date(year, parseInt(a[2],10)-1, parseInt(a[1],10));
+      return {start, end:start};
+    }
+    return null;
+  }
+
+  function highlightActiveCards() {
+    const today = new Date(); today.setHours(0,0,0,0);
+
+    // candidatos: itens da timeline + apenas cards filhos (sem outros cards dentro)
+    const candidates = Array.from(document.querySelectorAll('.timeline .item, main .card:not(:has(.card))'
+));
+
+
+
+    // limpa ativações anteriores
+    document.querySelectorAll('.active').forEach(el => el.classList.remove('active'));
+
+    let firstActive = null;
+
+    candidates.forEach(el => {
+      // prefira um elemento ".when" se existir; senão use todo o texto do node
+      const whenEl = el.querySelector('.when');
+      const text = whenEl ? whenEl.textContent.trim() : (el.textContent || '').trim();
+      const range = parseDateRange(text);
+      if (!range) {
+        // se não houver intervalo, remova possível mensagem antiga
+        const old = el.querySelector('.deadline-msg');
+        if (old) old.remove();
+        return;
+      }
+
+      const s = new Date(range.start); s.setHours(0,0,0,0);
+      const e = new Date(range.end); e.setHours(23,59,59,999);
+
+      if (today >= s && today <= e) {
+        el.classList.add('active');
+        if (!firstActive) firstActive = el;
+
+        const daysLeft = Math.ceil((e - today) / (1000 * 60 * 60 * 24));
+        let msg = el.querySelector('.deadline-msg');
+        if (!msg) {
+          msg = document.createElement('div');
+          msg.className = 'deadline-msg';
+          msg.style.marginTop = '8px';
+          msg.style.fontSize = '13px';
+          msg.style.color = 'var(--success)';
+          el.appendChild(msg);
+        }
+        msg.textContent = `⏳ Faltam ${daysLeft} dia${daysLeft !== 1 ? 's' : ''} para o prazo expirar.`;
+      } else {
+        // remove mensagem antiga caso exista e não esteja ativo
+        const old = el.querySelector('.deadline-msg');
+        if (old) old.remove();
+      }
+    });
+
+    // rolar para o primeiro ativo (se existir)
+    if (firstActive) {
+      firstActive.scrollIntoView({behavior:'smooth', block:'center'});
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', highlightActiveCards);
+})();
+</script>
 
 </body>
 </html>
