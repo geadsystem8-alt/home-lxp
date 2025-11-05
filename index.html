@@ -366,22 +366,23 @@
 
   //document.addEventListener('DOMContentLoaded', highlightActiveCards);
   document.addEventListener('DOMContentLoaded', () => {
-  // Estamos em iframe?
-  const inIframe = window.self !== window.top;
-
-  // Se em iframe, espere o navegador restaurar o scroll dele primeiro
-  if (inIframe) {
-    setTimeout(() => {
-      requestAnimationFrame(() => {
-        requestAnimationFrame(() => {
-          highlightActiveCards();
-        });
-      });
-    }, 250); // 250ms é o sweet spot
-  } else {
-    // Página aberta diretamente → scroll normal
+  function forceScroll() {
     highlightActiveCards();
   }
+
+  let attempts = 0;
+  const maxAttempts = 12; // ~2 segundos insistindo
+
+  const interval = setInterval(() => {
+    forceScroll();
+    attempts++;
+
+    // se já rolou para um ativo OU já insistimos o suficiente, parar
+    const active = document.querySelector('.active');
+    if ((active && Math.abs(active.getBoundingClientRect().top) < 350) || attempts >= maxAttempts) {
+      clearInterval(interval);
+    }
+  }, 160); // roda novamente após o iframe restaurar scroll
 });
 })();
 </script>
