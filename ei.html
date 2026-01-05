@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Cronograma Estudos Interativos | Unis Digital</title>
+  <meta name="description" content="Página moderna em tons de azul com o cronograma do módulo, provas e orientações." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg: #0B1220; /* fundo geral azul-escuro */
+      --bg-soft: #0F1A30; /* cartões e seções */
+      --card: #122038;
+      --muted: #9db4d1;
+      --text: #e8f1ff;
+      --accent: #2e8af6; /* azul principal */
+      --accent-2: #5cc2ff; /* azul claro de realce */
+      --success: #20c997;
+      --warning: #ffc107;
+      --danger: #ff6b6b;
+      --shadow: 0 10px 30px rgba(0,0,0,.45);
+      --radius: 16px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji";
+      background-color: #0B1220 !important; /* cor sólida sem gradiente */
+      background-image: none !important;    /* força remover os gradientes */
+      color: var(--text);
+      line-height: 1.6;
+    }
+    a{color: var(--accent-2); text-decoration: none}
+    a:hover{text-decoration: underline}
+
+    .container{width:min(1100px, 92%); margin-inline:auto}
+
+    /* Header / Hero */
+    header{
+      position: relative; overflow: hidden;
+      background: linear-gradient(180deg, rgba(18,32,56,.6) 0%, rgba(18,32,56,0) 100%);
+      border-bottom: 1px solid rgba(92,194,255,.15);
+    }
+    .hero{
+      padding: 48px 0 24px;
+      display:grid; gap:18px;
+    }
+    .badge{
+      display:inline-flex; align-items:center; gap:8px;
+      padding:6px 10px; border-radius:999px;
+      background: rgba(46,138,246,.15);
+      color: var(--accent-2);
+      font-weight:600; font-size:12px; letter-spacing:.4px; text-transform:uppercase;
+      border:1px solid rgba(46,138,246,.35);
+      backdrop-filter: blur(6px);
+    }
+    .title{font-size: clamp(28px, 4vw, 42px); line-height:1.1; margin:0}
+    .subtitle{color: var(--muted); margin:0}
+
+    /* Sections */
+    section{margin: 28px 0}
+    .grid{
+      display:grid; gap:18px;
+      grid-template-columns: repeat(12, 1fr);
+    }
+
+    .card{
+      background: linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,0));
+      border: 1px solid rgba(92,194,255,.15);
+      border-radius: var(--radius);
+      padding: 16px 16px;
+      box-shadow: var(--shadow);
+    }
+    .card h3{margin:0 0 6px; font-size:18px}
+    .card p{margin:0}
+
+    /* Timeline */
+    .timeline{display:grid; gap:14px}
+    .item{
+      position:relative; padding:14px 14px 14px 54px; border-radius:14px;
+      background: rgba(18,32,56,.6);
+      border:1px solid rgba(92,194,255,.15);
+    }
+    .item:before{
+      content:""; position:absolute; left:20px; top:50%; transform:translateY(-50%);
+      width:24px; height:24px; border-radius:50%;
+      background: linear-gradient(180deg, var(--accent), var(--accent-2));
+      box-shadow:0 0 0 4px rgba(46,138,246,.2), 0 6px 20px rgba(46,138,246,.45);
+    }
+    .item .when{font-weight:700; color:#d3e6ff}
+    .item .what{color: var(--muted)}
+
+    .tag{display:inline-flex; align-items:center; gap:6px; font-size:12px; font-weight:600; padding:4px 8px; border-radius:999px; border:1px solid rgba(92,194,255,.25); background:rgba(46,138,246,.12); color:#d3e6ff}
+    .tags{display:flex; flex-wrap:wrap; gap:8px; margin-top:8px}
+
+    /* Highlight rows */
+    .ok{border-left:4px solid var(--success)}
+    .warn{border-left:4px solid var(--warning)}
+    .alert{border-left:4px solid var(--accent)}
+
+    /* Callouts */
+    .callout{
+      display:flex; gap:12px; align-items:flex-start;
+      padding:14px; border-radius:14px; border:1px dashed rgba(92,194,255,.25);
+      background: rgba(18,32,56,.6);
+    }
+    .callout strong{color:#dff0ff}
+
+    /* Footer */
+    footer{margin:40px 0 60px; color: var(--muted); font-size:14px}
+
+    /* Responsive */
+    @media (min-width: 700px){
+      .hero{grid-template-columns: 1fr 360px; align-items:center}
+    }
+
+    /* Print */
+    @media print{
+      body{background:#fff; color:#111}
+      .badge, .tag{border-color:#999; color:#111; background:#eee}
+      .card, .item, .callout{box-shadow:none; background:#fff; border-color:#ccc}
+      a{color:#00f; text-decoration: underline}
+    }
+    /* Efeito de brilho pulsante no card ativo */
+  .active {
+    border: 2px solid var(--success);
+    box-shadow: 0 0 20px rgba(32, 201, 151, .6);
+    transform: translateY(-3px);
+    animation: pulse 0.2s infinite alternate;
+    transition: all 0.4s ease-in-out;
+  }
+  @keyframes pulse {
+    from { box-shadow: 0 0 10px rgba(32, 201, 151, .3); }
+    to { box-shadow: 0 0 25px rgba(32, 201, 151, .8); }
+  }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container hero">
+      <div>
+        <span class="badge" aria-label="Informações do módulo">Cronograma do Módulo</span>
+        <h1 class="title">Olá, turma!</h1>
+        <p class="subtitle">Entenda seu módulo de estudos e fique atento às datas do calendário acadêmico para sua organização dentro do módulo.</p>
+      </div>
+      <div class="card" role="note" aria-label="Link para o calendário">
+        <h3>📅 Calendários Oficiais</h3>
+        <p>Para ver o calendário completo, acesse:<br>
+          <a href="https://portal.unis.edu.br/calendarios" target="_blank" rel="noopener">portal.unis.edu.br/calendarios</a>
+        </p>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <section aria-labelledby="cronograma-title">
+      <div class="grid" style="grid-template-columns: repeat(12, 1fr); align-items:start">
+        <div class="card" style="grid-column: span 12;">
+          <h2 id="cronograma-title" style="margin:0 0 8px">Cronograma das Atividades e Prova</h2>
+          <p style="margin:0; color:var(--muted); font-size:14px">Acompanhe os ciclos de estudo e as atividades avaliativas.</p>
+        </div>
+        <div class="card" style="grid-column: span 12;">
+          <div class="timeline">
+            <div class="item ok">
+              <div class="when">10/10 a 21/10 — Ciclo 1 </div>
+              <div class="what">Conteúdos para estudo + <strong>Atividade 1</strong> — <strong>9 pontos</strong></div>
+              <div class="tags"><span class="tag">✅ Atividade</span><span class="tag">Estudos</span></div>
+            </div>
+            <div class="item ok">
+              <div class="when">22/10 a 31/10 — Ciclo 2</div>
+              <div class="what">Conteúdos para estudo + <strong>Atividade 2</strong> — <strong>9 pontos</strong></div>
+              <div class="tags"><span class="tag">✅ Atividade</span><span class="tag">Estudos</span></div>
+            </div>
+            <div class="item ok">
+              <div class="when">01/11 a 13/11 — Ciclo 3</div>
+              <div class="what">Conteúdos para estudo + <strong>Atividade 3</strong> — <strong>9 pontos</strong></div>
+              <div class="tags"><span class="tag">✅ Atividade</span><span class="tag">Estudos</span></div>
+            </div>
+            <div class="item ok">
+              <div class="when">14/11 a 23/11 — Ciclo 4</div>
+              <div class="what">Conteúdos para estudo (<em>Consulte sua disciplina para verificar se há atividade neste ciclo.</em>)</div>
+              <div class="tags"><span class="tag">ℹ️ Estudos</span></div>
+            </div>
+            <div class="item ok">
+              <div class="when">24/11 a 04/12 — Ciclo 5</div>
+              <div class="what">Conteúdos para estudo + <strong>Atividade 4</strong> (contemplando os ciclos 4 e 5) — <strong>18 pontos</strong></div>
+              <div class="tags"><span class="tag">✅ Atividade</span><span class="tag">Estudos</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section aria-labelledby="avaliacoes-title">
+      <div class="grid">
+        <div class="card" style="grid-column: span 12;">
+          <h2 id="avaliacoes-title" style="margin:0 0 8px">Avaliações e Extensão</h2>
+          <p class="subtitle" style="margin:0 0 12px; font-size:14px">Provas, chamadas e atividade de extensão válidas para o módulo.</p>
+
+          <div class="callout" style="margin-bottom:12px">
+            <div>📌</div>
+            <div>
+              <strong>Atividade de Extensão</strong> — Orientações e datas na sala de coordenação do seu curso — <strong>15 pontos</strong> para todas as disciplinas.
+            </div>
+          </div>
+
+          <div class="grid" style="grid-template-columns: repeat(12, 1fr); gap:12px">
+            <div class="card" style="grid-column: span 12; background:rgba(18,32,56,.6)">
+              <h3>📝 Prova — 1ª chamada</h3>
+              <p><strong>25/11 a 26/11</strong> — Conteúdos dos ciclos <strong>1, 2 e 3</strong> — <strong>40 pontos</strong></p>
+            </div>
+            <div class="card" style="grid-column: span 12; background:rgba(18,32,56,.6)">
+              <h3>📝 Prova — 2ª chamada</h3>
+              <p><strong>28/11 a 29/11</strong> — Conteúdos dos ciclos <strong>1, 2 e 3</strong> — <strong>40 pontos</strong></p>
+            </div>
+          </div>
+
+          <div class="callout" style="margin-top:12px">
+            <div>⚠️</div>
+            <div>
+              <strong>Importante:</strong> Atentem-se para o período de provas. Acompanhe as orientações pelo <strong>MURAL</strong> dentro do período divulgado acima.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section aria-labelledby="acompanhamento-title">
+      <div class="grid">
+        <div class="card" style="grid-column: span 12;">
+          <h2 id="acompanhamento-title" style="margin:0 0 8px">Acompanhamento e Fechamentos</h2>
+          <div class="timeline">
+            <div class="item warn">
+              <div class="when">15/12 — Fechamento das Notas</div>
+              <div class="what">Acompanhe o lançamento das notas dentro do módulo em andamento.</div>
+            </div>
+            <div class="item alert">
+              <div class="when">Após o encerramento do módulo</div>
+              <div class="what">Não será mais possível solicitar <strong>revisão de nota</strong>.</div>
+            </div>
+            <div class="item ok">
+              <div class="when">18/12 — Término do módulo</div>
+              <div class="what">Encerramento oficial das atividades do módulo.</div>
+            </div>
+            <div class="item ok">
+              <div class="when">06/02/2026 a 07/02/2026 — Prova Final</div>
+              <div class="what">Aplicação da prova final, conforme calendário.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section aria-labelledby="contatos-title">
+      <div class="grid">
+        <div class="card" style="grid-column: span 12;">
+          <h2 id="contatos-title" style="margin:0 0 8px">Dúvidas e Contatos</h2>
+          <p>Em caso de dúvidas, escreva para seu <strong>professor</strong>, <strong>coordenador</strong> ou <strong>tutor</strong> através do <em>comentário particular</em> de qualquer atividade aqui no ambiente da disciplina ou no ambiente da coordenação, durante o andamento do módulo.</p>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <div class="container" style="display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap">
+        <span>Desejamos um ótimo módulo para todos. <strong>Equipe Unis Digital</strong></span>
+      </div>
+    </footer>
+  </main>
+
+
+
+<script>
+(function(){
+  function parseDateRange(text) {
+    text = (text || '').replace(/–/g,'-').replace(/—/g,'-').replace(/\u2013/g,'-');
+    const year = new Date().getFullYear();
+    // padrão dd/mm a dd/mm
+    let m = text.match(/(\d{1,2})\/(\d{2})\s*(?:a|à|\-|-)\s*(\d{1,2})\/(\d{2})/i);
+    if (m) {
+      const start = new Date(year, parseInt(m[2],10)-1, parseInt(m[1],10));
+      const end = new Date(year, parseInt(m[4],10)-1, parseInt(m[3],10));
+      return {start, end};
+    }
+    // padrão "24 e 25/10" ou "24, 25/10"
+    m = text.match(/(\d{1,2})\s*(?:e|,)\s*(\d{1,2})\/(\d{2})/i);
+    if (m) {
+      const start = new Date(year, parseInt(m[3],10)-1, parseInt(m[1],10));
+      const end = new Date(year, parseInt(m[3],10)-1, parseInt(m[2],10));
+      return {start, end};
+    }
+    // pega quaisquer pares dd/mm no texto
+    const all = [...text.matchAll(/(\d{1,2})\/(\d{2})/g)];
+    if (all.length >= 2) {
+      const a = all[0], b = all[all.length-1];
+      const start = new Date(year, parseInt(a[2],10)-1, parseInt(a[1],10));
+      const end = new Date(year, parseInt(b[2],10)-1, parseInt(b[1],10));
+      return {start,end};
+    }
+    if (all.length === 1) {
+      const a = all[0];
+      const start = new Date(year, parseInt(a[2],10)-1, parseInt(a[1],10));
+      return {start, end:start};
+    }
+    return null;
+  }
+
+  function highlightActiveCards() {
+    const today = new Date(); today.setHours(0,0,0,0);
+
+    // candidatos: itens da timeline + apenas cards filhos (sem outros cards dentro)
+    const candidates = Array.from(document.querySelectorAll('.timeline .item, main .card:not(:has(.card))'
+));
+
+
+
+    // limpa ativações anteriores
+    document.querySelectorAll('.active').forEach(el => el.classList.remove('active'));
+
+    let firstActive = null;
+
+    candidates.forEach(el => {
+      // prefira um elemento ".when" se existir; senão use todo o texto do node
+      const whenEl = el.querySelector('.when');
+      const text = whenEl ? whenEl.textContent.trim() : (el.textContent || '').trim();
+      const range = parseDateRange(text);
+      if (!range) {
+        // se não houver intervalo, remova possível mensagem antiga
+        const old = el.querySelector('.deadline-msg');
+        if (old) old.remove();
+        return;
+      }
+
+      const s = new Date(range.start); s.setHours(0,0,0,0);
+      const e = new Date(range.end); e.setHours(23,59,59,999);
+
+      if (today >= s && today <= e) {
+        el.classList.add('active');
+        if (!firstActive) firstActive = el;
+
+        const daysLeft = Math.ceil((e - today) / (1000 * 60 * 60 * 24));
+        let msg = el.querySelector('.deadline-msg');
+        if (!msg) {
+          msg = document.createElement('div');
+          msg.className = 'deadline-msg';
+          msg.style.marginTop = '8px';
+          msg.style.fontSize = '13px';
+          msg.style.color = 'var(--success)';
+          el.appendChild(msg);
+        }
+        msg.textContent = `⏳ Faltam ${daysLeft} dia${daysLeft !== 1 ? 's' : ''} para o prazo expirar.`;
+      } else {
+        // remove mensagem antiga caso exista e não esteja ativo
+        const old = el.querySelector('.deadline-msg');
+        if (old) old.remove();
+      }
+    });
+
+    // rolar para o primeiro ativo (se existir)
+    if (firstActive) {
+      firstActive.scrollIntoView({behavior:'smooth', block:'center'});
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', highlightActiveCards);
+})();
+</script>
+
+</body>
+</html>
